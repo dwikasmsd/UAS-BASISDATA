@@ -12,9 +12,9 @@
 		</div>
 		<div class="main">
 			<form>
-				<input type="text" placeholder="Username">
+				<input type="text" name="username" placeholder="Username">
 				<br>
-				<input type="password" placeholder="password">
+				<input type="password" name="password" placeholder="password">
 				<br>
 				<a href="">Forgot My Password</a>
 				<a href="">login as Admin</a>
