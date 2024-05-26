@@ -16,7 +16,7 @@
 				<br>
 				<input type="password" name="password" placeholder="password">
 				<br>
-				<a href="">Forgot My Password</a>
+				<a href="registrasi.php">Sign Up</a>
 				<a href="">login as Admin</a>
 				<br>
 				<button>Login</button>
