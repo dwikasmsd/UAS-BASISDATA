@@ -22,35 +22,31 @@
                 <form action="registrasi.php" method="post">
                     <input type="text" name="username" placeholder="Username">
                     <br>
-                    <input type="password" name="password" placeholder="password">
+                    <input type="text" name="nomorHp" placeholder="Nomor HP">
                     <br>
-                    <input type="password" name="confirmPassword" placeholder="confirm password">
+                    <input type="password" name="password" placeholder="password">
                     <br>
                     <p style="font-size: 15px;"><?php
                     if (isset($_POST["login"])) {
-                        if (empty($_POST["username"]) || empty($_POST["password"]) || empty($_POST["confirmPassword"])) {
-                            echo"Isi username/password";
+                        if (empty($_POST["username"]) || empty($_POST["password"]) || empty($_POST["nomorHp"])) {
+                            echo"Isi username/password/Nomor Hp";
                         }
                         else {
                             $username = $_POST["username"];
                             $password1 = $_POST["password"];
-                            $password2 = $_POST["confirmPassword"];
-                            $result = mysqli_query($koneksi,"SELECT Nama FROM pengguna WHERE Nama = '$username'");
+                            $nomor = $_POST["nomorHp"];
+                            $result = mysqli_query($koneksi,"SELECT no_hp FROM pengguna WHERE no_hp = '$nomor'");
 
                             if (mysqli_fetch_assoc($result)) {
-                                echo"Username sudah digunakan";
+                                echo"nomor HP sudah digunakan";
                             } else {
-                                
-                                if ($password1 != $password2) {
-                                    echo "Pastikan password yang diisi benar";
-                                } else{
-                                    $hashing = password_hash($password1, PASSWORD_DEFAULT); 
-                                    $sql = "INSERT INTO pengguna(Nama, password) VALUES('$username', '$hashing')";
-    
+
+                                    $hashing = password_hash($password1, PASSWORD_DEFAULT);
+                                    $sql = "INSERT INTO pengguna(nama_lengkap, no_hp, password) VALUES('$username', '$nomor', '$hashing')";
+
                                     mysqli_query($koneksi, $sql);
-    
+
                                     header("location: index.php");
-                                }
                             }
                             
                         }
