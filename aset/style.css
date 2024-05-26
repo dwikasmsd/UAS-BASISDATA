@@ -35,6 +35,10 @@ html,body {
 	font-size: 35px;
 }
 
+.main p {
+	margin: 0;
+}
+
 .main input,button {
 	width: 80%;
 	height: 35px;

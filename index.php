@@ -1,3 +1,29 @@
+<?php 
+
+	include("config.php");
+
+	if (isset($_POST["login"])) {
+		$username = $_POST["username"];
+		$password = $_POST["password"];
+
+		$sql = "SELECT * FROM pengguna WHERE Nama = '$username'";
+		$result = mysqli_query($koneksi, $sql);
+
+		if (mysqli_num_rows($result) === 1) {
+			$baris = mysqli_fetch_assoc($result);
+
+			if (password_verify($password, $baris["password"])) {
+				header("location: Halaman.php");
+			}
+		}
+		
+		$error = true;
+	
+	}
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,15 +37,23 @@
 			<h1>Login</h1>
 		</div>
 		<div class="main">
-			<form>
+			<form action="index.php" method="post">
 				<input type="text" name="username" placeholder="Username">
 				<br>
 				<input type="password" name="password" placeholder="password">
 				<br>
 				<a href="registrasi.php">Sign Up</a>
 				<a href="">login as Admin</a>
-				<br>
-				<button>Login</button>
+				<p style="font-style:italic; color:red; font-size:13px;">
+					<?php
+						if (isset($_POST["login"])) {
+							if ($error = true) {
+							echo "Username/Password salah";
+							}
+						}	
+					?>
+				</p>
+				<input class="login" type="submit" name="login" value="Login">
 			</form>
 		</div>
 	</div>
