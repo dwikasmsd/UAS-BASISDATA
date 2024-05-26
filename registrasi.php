@@ -1,3 +1,9 @@
+<?php
+
+    include("config.php");
+
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -29,12 +35,24 @@
                             $username = $_POST["username"];
                             $password1 = $_POST["password"];
                             $password2 = $_POST["confirmPassword"];
-                            
-                            if ($password1 != $password2) {
-                                echo "Pastikan password yang diisi benar";
-                            } else{
-                                header("location: index.php");
+                            $result = mysqli_query($koneksi,"SELECT Nama FROM pengguna WHERE Nama = '$username'");
+
+                            if (mysqli_fetch_assoc($result)) {
+                                echo"Username sudah digunakan";
+                            } else {
+                                
+                                if ($password1 != $password2) {
+                                    echo "Pastikan password yang diisi benar";
+                                } else{
+                                    $hashing = password_hash($password1, PASSWORD_DEFAULT); 
+                                    $sql = "INSERT INTO pengguna(Nama, password) VALUES('$username', '$hashing')";
+    
+                                    mysqli_query($koneksi, $sql);
+    
+                                    header("location: index.php");
+                                }
                             }
+                            
                         }
                     }
                     ?></p>
