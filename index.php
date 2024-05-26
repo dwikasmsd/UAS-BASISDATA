@@ -6,7 +6,7 @@
 		$username = $_POST["username"];
 		$password = $_POST["password"];
 
-		$sql = "SELECT * FROM pengguna WHERE Nama = '$username'";
+		$sql = "SELECT * FROM pengguna WHERE nama_lengkap = '$username'";
 		$result = mysqli_query($koneksi, $sql);
 
 		if (mysqli_num_rows($result) === 1) {
@@ -43,7 +43,7 @@
 				<input type="password" name="password" placeholder="password">
 				<br>
 				<a href="registrasi.php">Sign Up</a>
-				<a href="">login as Admin</a>
+				<a href="adminLogin.php">login as Admin</a>
 				<p style="font-style:italic; color:red; font-size:13px;">
 					<?php
 						if (isset($_POST["login"])) {
