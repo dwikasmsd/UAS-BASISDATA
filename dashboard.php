@@ -1,3 +1,10 @@
+<?php
+
+    include("config.php");
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -90,7 +97,10 @@
             padding: 10px 20px;
             word-break: break-all;
             text-align: center;
+
         }
+
+        
 
         ::placeholder {
             color: #0298cf;
@@ -124,10 +134,10 @@
     <div class="content">
         <div class="table">
             <div class="table_header">
-                <p>product detail</p>
+                <p>List Artikel</p>
                 <div>
                     <input type="text" placeholder="product">
-                    <a href="index.php"><button class="add_new">+ add new</button></a>
+                    <a href="tambahArtikel.php"><button class="add_new">+ add new</button></a>
                 </div>
             </div>
             <div class="table_section">
@@ -135,30 +145,39 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>product</th>
-                            <th>name</th>
-                            <th>email</th>
-                            <th>status</th>
+                            <th>Judul Artikel</th>
+                            <th>Kategori</th>
+                            <th>Tanggal</th>
+                            <th>Rating</th>
                             <th>action</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         <?php
-                        echo "<tr>";
-                        echo "<td>1</td>";
-                        echo "<td>dfdfdf</td>";
-                        echo "<td>ddfdf</td>";
-                        echo "<td>1dffd</td>";
-                        echo "<td>dffddf</td>";
-                        echo "<td>
-                                <button><i class='fa-solid fa-pen-to-square'></i></button>
-                                <button><i class='fa-solid fa-trash'></i></button>
+                        $sql = "SELECT * FROM artikel";
+                        $query = mysqli_query($koneksi, $sql);
+                        $i = 1;
+
+                        while ($artikel = mysqli_fetch_array($query)) {
+                            echo "<tr>";
+                            echo "<td>{$i}</td>";
+                            echo "<td>{$artikel['judul_artikel']}</td>";
+                            echo "<td>{$artikel['kategori_artikel']}</td>";
+                            echo "<td>{$artikel['tanggal_artikel']}</td>";
+                            echo "<td>{$artikel['rating']}</td>";
+
+                            echo "<td> 
+                            <button><i class='fa-solid fa-pen-to-square'></i></button>
+                            <button><i class='fa-solid fa-trash'></i></button> 
                             </td>";
-
-                        echo "</tr>";
-
+        
+                            echo "</tr>";
+                            $i++;
+                        }
                         ?>
+
+                        
                     </tbody>
                 </table>
             </div>
