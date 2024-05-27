@@ -48,11 +48,11 @@
             color: #ffffff;
         }
 
-        td button:nth-child(1) {
+        td .edit {
             background-color: #0298cf;
         }
 
-        td button:nth-child(2) {
+        td .delete {
             background-color: #f80000;
         }
 
@@ -168,8 +168,8 @@
                             echo "<td>{$artikel['rating']}</td>";
 
                             echo "<td> 
-                            <button><i class='fa-solid fa-pen-to-square'></i></button>
-                            <button><i class='fa-solid fa-trash'></i></button> 
+                            <a href='form-edit.php?id={$artikel["id_artikel"]}'><button class='edit'><i class='fa-solid fa-pen-to-square'></i></button></a>
+                            <a href='delete.php?id={$artikel["id_artikel"]}'><button class='delete'><i class='fa-solid fa-trash'></i></button></a>
                             </td>";
         
                             echo "</tr>";
