@@ -127,7 +127,7 @@
                 <p>product detail</p>
                 <div>
                     <input type="text" placeholder="product">
-                    <button class="add_new">+ add new</button>
+                    <a href="index.php"><button class="add_new">+ add new</button></a>
                 </div>
             </div>
             <div class="table_section">

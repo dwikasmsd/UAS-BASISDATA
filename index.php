@@ -11,7 +11,8 @@
 
 		if (mysqli_num_rows($result) === 1) {
 			$baris = mysqli_fetch_assoc($result);
-
+			
+			
 			if (password_verify($password, $baris["password"])) {
 				header("location: Halaman.php");
 			}
