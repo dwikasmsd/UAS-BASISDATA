@@ -3,6 +3,26 @@
 include("config.php");
 
 
+if (isset($_POST["add"])) {
+    $tanaman = $_POST["nama_tanaman"];
+
+    if (!empty($tanaman)) {
+
+        $sql = "SELECT * FROM tanaman WHERE jenis_tanaman = '$tanaman'";
+        $result = mysqli_query($koneksi, $sql);
+    
+        if (mysqli_num_rows($result) === 1) {
+            $error = true;
+        } else {
+            mysqli_query($koneksi, "INSERT INTO tanaman(jenis_tanaman) VALUES('$tanaman')");
+            header("location: jenisTanaman.php");
+        }
+    } 
+
+
+   
+
+}
 ?>
 
 <!DOCTYPE html>
@@ -65,6 +85,11 @@ include("config.php");
             padding: 10px 20px;
             color: #ffffff;
             background-color: #0298cf;
+            cursor: pointer;
+        }
+
+        .add_new:hover{
+        background-color: teal;
         }
 
         input {
@@ -129,8 +154,8 @@ include("config.php");
 <body>
 
     <div class="sidebar">
-        <a class="active" href="dashboard.php">Artikel</a>
-        <a href="jenisTanaman.php">Tanaman</a>
+        <a href="dashboard.php">Artikel</a>
+        <a class="active" href="#news">Tanaman</a>
         <a href="#contact">Daftar Pertanyaan</a>
         <a href="#about">Daftar Jawaban</a>
         <a href="index.php">Log out</a>
@@ -139,10 +164,20 @@ include("config.php");
     <div class="content">
         <div class="table">
             <div class="table_header">
-                <p>List Artikel</p>
+                <p>List Tanaman</p>
                 <div>
-                    <input type="text" placeholder="product">
-                    <a href="tambahArtikel.php"><button class="add_new">+ add new</button></a>
+                    <form action="jenisTanaman.php" method="post">
+                        <input type="text" placeholder="product" name="nama_tanaman">
+                        <input type="submit" class="add_new" name="add" value="+ add">
+                        <?php
+                        if (isset($_POST["add"])) {
+                            if ($error = true) {
+                                echo "jenis tanaman sudah dimasukan/kolom kosong";
+                                $error = false;
+                            }
+                        }
+                        ?>
+                    </form>
                 </div>
             </div>
             <div class="table_section">
@@ -150,31 +185,25 @@ include("config.php");
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Judul Artikel</th>
-                            <th>Kategori</th>
-                            <th>Tanggal</th>
-                            <th>Rating</th>
+                            <th>Tanaman</th>
                             <th>action</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         <?php
-                        $sql = "SELECT * FROM artikel";
+                        $sql = "SELECT * FROM tanaman";
                         $query = mysqli_query($koneksi, $sql);
                         $i = 1;
 
-                        while ($artikel = mysqli_fetch_array($query)) {
+                        while ($jenisTanaman = mysqli_fetch_array($query)) {
                             echo "<tr>";
                             echo "<td>{$i}</td>";
-                            echo "<td>{$artikel['judul_artikel']}</td>";
-                            echo "<td>{$artikel['kategori_artikel']}</td>";
-                            echo "<td>{$artikel['tanggal_artikel']}</td>";
-                            echo "<td>{$artikel['rating']}</td>";
+                            echo "<td>{$jenisTanaman['jenis_tanaman']}</td>";
+                            
 
                             echo "<td> 
-                            <a href='edit.php?id={$artikel["id_artikel"]}'><button class='edit'><i class='fa-solid fa-pen-to-square'></i></button></a>
-                            <a href='delete.php?id={$artikel["id_artikel"]}'><button class='delete'><i class='fa-solid fa-trash'></i></button></a>
+                            <a href='delete.php?id={$jenisTanaman["id_tanaman"]}'><button class='delete'><i class='fa-solid fa-trash'></i></button></a>
                             </td>";
 
                             echo "</tr>";
@@ -192,3 +221,4 @@ include("config.php");
 </body>
 
 </html>
+
