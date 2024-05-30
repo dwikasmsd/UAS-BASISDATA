@@ -168,7 +168,7 @@
                             echo "<td>{$artikel['rating']}</td>";
 
                             echo "<td> 
-                            <a href='form-edit.php?id={$artikel["id_artikel"]}'><button class='edit'><i class='fa-solid fa-pen-to-square'></i></button></a>
+                            <a href='edit.php?id={$artikel["id_artikel"]}'><button class='edit'><i class='fa-solid fa-pen-to-square'></i></button></a>
                             <a href='delete.php?id={$artikel["id_artikel"]}'><button class='delete'><i class='fa-solid fa-trash'></i></button></a>
                             </td>";
         

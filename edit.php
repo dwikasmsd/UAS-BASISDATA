@@ -1,39 +1,34 @@
-<?php include("config.php"); ?>
 <?php
 
-// cek apakah tombol daftar sudah diklik atau blum? 
-if (isset($_POST["tambah"])) {
+include("config.php");
 
-    // ambil data dari formulir 
-    $judul = $_POST["judul"];
-    $isiArtikel = $_POST["isiArtikel"];
-    $kategoriArtikel = $_POST["kategori_artikel"];
-
-
-    // buat query 
-    $sql = "INSERT INTO artikel (judul_artikel, isi_artikel, kategori_artikel, tanggal_artikel) 
-    VALUES ('$judul', '$isiArtikel', '$kategoriArtikel', NOW())";
-    $query = mysqli_query($koneksi, $sql);
-
-    // apakah query simpan berhasil? 
-    if ($query) {
-        // kalau berhasil alihkan ke halaman index.php dengan status=sukses 
-        header("location: dashboard.php");
-    } else {
-        // kalau gagal alihkan ke halaman index.php dengan status=gagal 
-        header("location: index.php");
-    }
-} else if (isset($_POST["batal"])) {
-    header("location: dashboard.php");
+// kalau tidak ada id di query string 
+if (!isset($_GET["id"])) {
+    header('Location: dashboard.php');
 }
 
+//ambil id dari query string 
+$id = $_GET["id"];
+
+// buat query untuk ambil data dari database 
+$sql = "SELECT * FROM artikel WHERE id_artikel=$id";
+$query = mysqli_query($koneksi, $sql);
+$artikel = mysqli_fetch_assoc($query);
+
+// jika data yang di-edit tidak ditemukan 
+if (mysqli_num_rows($query) < 1) {
+    die("data tidak ditemukan...");
+}
+
+
 ?>
+
 
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Formulir Pendaftaran Pasien Baru | RS Santoso</title>
+    <title>Edit Artikel</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -139,40 +134,41 @@ if (isset($_POST["tambah"])) {
 
 <body>
     <header>
-        <h2>Penambahan Artikel Baru</h2>
+        <h3>Edit Pasien</h3>
     </header>
 
-    <form action="tambahArtikel.php" method="POST">
+    <form action="edited.php" method="POST">
 
         <fieldset>
 
+            <input type="hidden" name="id" value="<?php echo $artikel["id_artikel"]
+                                                    ?>" />
+
             <p>
-                <label for="judul">Judul: </label>
-                <input type="text" name="judul" placeholder="judul artikel" />
+                <label for="judul">Judul Artikel: </label>
+                <input type="text" name="judul" placeholder="Judul Artikel" value="<?php echo $artikel["judul_artikel"] ?>" />
             </p>
             <p>
-                <label for="isiArtikel">isi artikel: </label>
-                <textarea name="isiArtikel"></textarea>
+                <label for="isi_artikel">Isi Artikel: </label>
+                <textarea name="isiArtikel"><?php echo $artikel['isi_artikel']
+                                            ?></textarea>
             </p>
             <p>
-                <label for="Kategori_Artikel">Kategori Artikel: </label>
-            <div class="radio-group">
-                <label><input type="radio" name="kategori_artikel" value="Hidroponik"> Hidroponik</label>
-                <label><input type="radio" name="kategori_artikel" value="Tanaman pangan"> Tanaman pangan</label>
-                <label><input type="radio" name="kategori_artikel" value="Tanaman jamur"> Tanaman jamur</label>
-                <label><input type="radio" name="kategori_artikel" value="Teknologi pertanian"> Teknologi pertanian</label>
-                <label><input type="radio" name="kategori_artikel" value="Penyakit tanaman"> Penyakit tanaman</label>
-            </div>
+                <label for="jenis_kelamin">Kategori: </label>
+                <?php $kategoriArtikel = $artikel["kategori_artikel"]; ?>
+                <label><input type="radio" name="kategori_artikel" value="Hidroponik" <?php echo ($kategoriArtikel == 'Hidroponik') ? "checked" : "" ?>> Hidroponik</label>
+                <label><input type="radio" name="kategori_artikel" value="Tanaman pangan" <?php echo ($kategoriArtikel == 'Tanaman pangan') ? "checked" : "" ?>> Tanaman pangan</label>
+                <label><input type="radio" name="kategori_artikel" value="Tanaman jamur" <?php echo ($kategoriArtikel == 'Tanaman jamur') ? "checked" : "" ?>> Tanaman jamur</label>
+                <label><input type="radio" name="kategori_artikel" value="Teknologi pertanian" <?php echo ($kategoriArtikel == 'Teknologi pertanian') ? "checked" : "" ?>> Teknologi pertanian</label>
+                <label><input type="radio" name="kategori_artikel" value="Penyakit tanaman" <?php echo ($kategoriArtikel == 'L') ? "Penyakit tanaman" : "" ?>> Penyakit tanaman</label>
+
             </p>
             <p class="tombol">
-                <input class="abort" type="submit" value="Batalkan" name="batal" />
-                <input class="add" type="submit" value="Tambahkan" name="tambah" />
+     
+                <input class="add" type="submit" value="Edit Artikel" name="tambah" />
             </p>
-
         </fieldset>
-
     </form>
-
 </body>
 
 </html>
