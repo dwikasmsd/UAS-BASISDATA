@@ -174,7 +174,7 @@ include("config.php");
 
                             echo "<td> 
                             <a href='edit.php?id={$artikel["id_artikel"]}'><button class='edit'><i class='fa-solid fa-pen-to-square'></i></button></a>
-                            <a href='delete.php?id={$artikel["id_artikel"]}'><button class='delete'><i class='fa-solid fa-trash'></i></button></a>
+                            <a href='deleteArtikel.php?id={$artikel["id_artikel"]}'><button class='delete'><i class='fa-solid fa-trash'></i></button></a>
                             </td>";
 
                             echo "</tr>";
