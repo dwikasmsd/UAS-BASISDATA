@@ -12,7 +12,7 @@ if (isset($_POST["tambah"])) {
 
     // buat query 
     $sql = "INSERT INTO artikel (judul_artikel, isi_artikel, kategori_artikel, tanggal_artikel) 
-    VALUES ('$judul', '$isiArtikel', '$kategoriArtikel', NOW())";
+    VALUES ('$judul', '$isiArtikel', '$kategoriArtikel', CURRENT_DATE())";
     $query = mysqli_query($koneksi, $sql);
 
     // apakah query simpan berhasil? 
