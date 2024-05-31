@@ -167,7 +167,7 @@ if (isset($_POST["add"])) {
                 <p>List Tanaman</p>
                 <div>
                     <form action="jenisTanaman.php" method="post">
-                        <input type="text" placeholder="product" name="nama_tanaman">
+                        <input type="text" placeholder="tanaman" name="nama_tanaman">
                         <input type="submit" class="add_new" name="add" value="+ add">
                         <?php
                         if (isset($_POST["add"])) {
@@ -203,7 +203,7 @@ if (isset($_POST["add"])) {
                             
 
                             echo "<td> 
-                            <a href='delete.php?id={$jenisTanaman["id_tanaman"]}'><button class='delete'><i class='fa-solid fa-trash'></i></button></a>
+                            <a href='deleteTanaman.php?id={$jenisTanaman["id_tanaman"]}'><button class='delete'><i class='fa-solid fa-trash'></i></button></a>
                             </td>";
 
                             echo "</tr>";
