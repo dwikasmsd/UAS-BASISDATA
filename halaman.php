@@ -140,7 +140,7 @@ include("config.php");
 <body>
 
     <div class="sidebar">
-        <a class="active" href="dashboard.php">Artikel</a>
+        <a class="active" href="halaman.php">Artikel</a>
         <a href="jenisTanaman.php">Tanaman</a>
         <a href="#contact">Daftar Pertanyaan</a>
         <a href="#about">Daftar Jawaban</a>
@@ -178,7 +178,7 @@ include("config.php");
                             echo "<td class='category'>{$artikel['kategori_artikel']}</td>";
 
                             echo "<td class='aksi'> 
-                            <a href='edit.php?id={$artikel["id_artikel"]}'><button class='edit'><i class='fa-regular fa-eye'></i></button></a>
+                            <a href='viewArtikel.php?id={$artikel["id_artikel"]}'><button class='edit'><i class='fa-regular fa-eye'></i></button></a>
                            
                             </td>";
 

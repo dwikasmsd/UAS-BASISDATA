@@ -10,9 +10,10 @@ CREATE TABLE artikel (
     id_artikel INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     judul_artikel VARCHAR(300) NOT NULL,
     isi_artikel LONGTEXT NOT NULL,
-    kategori_artikel VARCHAR(300) NOT NULL,
+    id_kategori INT NOT NULL,
     tanggal_artikel DATE NOT NULL,
-    rating FLOAT
+    rating FLOAT,
+    FOREIGN KEY(id_kategori) REFERENCES kategori_artikel(id_kategori)
 );
 
 CREATE TABLE pengguna (
@@ -26,4 +27,9 @@ CREATE TABLE pengguna (
 CREATE TABLE tanaman (
     id_tanaman INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     jenis_tanaman VARCHAR(260) NOT NULL 
+);
+
+CREATE TABLE kategori_artikel (
+    id_kategori INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    nama_kategori VARCHAR(255) NOT NULL
 );

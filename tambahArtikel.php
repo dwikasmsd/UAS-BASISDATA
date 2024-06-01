@@ -1,39 +1,40 @@
 <?php include("config.php"); ?>
+
 <?php
-
-// cek apakah tombol daftar sudah diklik atau blum? 
+// Cek apakah tombol daftar sudah diklik atau belum
 if (isset($_POST["tambah"])) {
-
-    // ambil data dari formulir 
+    // Ambil data dari formulir
     $judul = $_POST["judul"];
     $isiArtikel = $_POST["isiArtikel"];
     $kategoriArtikel = $_POST["kategori_artikel"];
 
-
-    // buat query 
-    $sql = "INSERT INTO artikel (judul_artikel, isi_artikel, kategori_artikel, tanggal_artikel) 
-    VALUES ('$judul', '$isiArtikel', '$kategoriArtikel', CURRENT_DATE())";
+    // Buat query
+    $sql = "INSERT INTO artikel (judul_artikel, isi_artikel, id_kategori, tanggal_artikel) 
+            VALUES ('$judul', '$isiArtikel', $kategoriArtikel, CURRENT_DATE())";
     $query = mysqli_query($koneksi, $sql);
 
-    // apakah query simpan berhasil? 
+    // Apakah query simpan berhasil?
     if ($query) {
-        // kalau berhasil alihkan ke halaman index.php dengan status=sukses 
+        // Kalau berhasil alihkan ke halaman dashboard.php dengan status=sukses
         header("location: dashboard.php");
     } else {
-        // kalau gagal alihkan ke halaman index.php dengan status=gagal 
+        // Kalau gagal alihkan ke halaman index.php dengan status=gagal
         header("location: index.php");
     }
 } else if (isset($_POST["batal"])) {
     header("location: dashboard.php");
 }
 
+// Ambil data kategori dari database
+$kategori_sql = "SELECT * FROM kategori_artikel";
+$kategori_result = mysqli_query($koneksi, $kategori_sql);
 ?>
 
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Formulir Pendaftaran Pasien Baru | RS Santoso</title>
+    <title>Formulir Penambahan Artikel Baru | RS Santoso</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -77,7 +78,8 @@ if (isset($_POST["tambah"])) {
 
         input[type="text"],
         textarea,
-        input[type="date"] {
+        input[type="date"],
+        select {
             width: calc(100% - 22px);
             padding: 10px;
             border: 1px solid #ccc;
@@ -87,10 +89,6 @@ if (isset($_POST["tambah"])) {
         textarea {
             resize: vertical;
             height: 200px;
-        }
-
-        input[type="radio"] {
-            margin-right: 5px;
         }
 
         .add {
@@ -125,11 +123,6 @@ if (isset($_POST["tambah"])) {
             background-color: #870202;
         }
 
-        .radio-group label {
-            display: flex;
-            margin-right: 10px;
-        }
-
         .tombol {
             display: flex;
             justify-content: space-evenly;
@@ -143,36 +136,30 @@ if (isset($_POST["tambah"])) {
     </header>
 
     <form action="tambahArtikel.php" method="POST">
-
         <fieldset>
-
             <p>
                 <label for="judul">Judul: </label>
-                <input type="text" name="judul" placeholder="judul artikel" />
+                <input type="text" name="judul" placeholder="judul artikel" required />
             </p>
             <p>
-                <label for="isiArtikel">isi artikel: </label>
-                <textarea name="isiArtikel"></textarea>
+                <label for="isiArtikel">Isi Artikel: </label>
+                <textarea name="isiArtikel" required></textarea>
             </p>
             <p>
-                <label for="Kategori_Artikel">Kategori Artikel: </label>
-            <div class="radio-group">
-                <label><input type="radio" name="kategori_artikel" value="Hidroponik"> Hidroponik</label>
-                <label><input type="radio" name="kategori_artikel" value="Tanaman pangan"> Tanaman pangan</label>
-                <label><input type="radio" name="kategori_artikel" value="Tanaman jamur"> Tanaman jamur</label>
-                <label><input type="radio" name="kategori_artikel" value="Teknologi pertanian"> Teknologi pertanian</label>
-                <label><input type="radio" name="kategori_artikel" value="Penyakit tanaman"> Penyakit tanaman</label>
-            </div>
+                <label for="kategori_artikel">Kategori Artikel: </label>
+                <select name="kategori_artikel" required>
+                    <option value="">-- Pilih Kategori --</option>
+                    <?php while ($row = mysqli_fetch_assoc($kategori_result)) { ?>
+                        <option value="<?php echo $row['id_kategori']; ?>"><?php echo htmlspecialchars($row['nama_kategori']); ?></option>
+                    <?php } ?>
+                </select>
             </p>
             <p class="tombol">
                 <input class="abort" type="submit" value="Batalkan" name="batal" />
                 <input class="add" type="submit" value="Tambahkan" name="tambah" />
             </p>
-
         </fieldset>
-
     </form>
-
 </body>
 
 </html>

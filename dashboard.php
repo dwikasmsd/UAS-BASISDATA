@@ -1,8 +1,5 @@
 <?php
-
 include("config.php");
-
-
 ?>
 
 <!DOCTYPE html>
@@ -14,10 +11,7 @@ include("config.php");
     <title>Document</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
-        <?php
-
-        include("aset/sidebar.css");
-        ?>* {
+        <?php include("aset/sidebar.css"); ?>* {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -102,10 +96,7 @@ include("config.php");
             padding: 10px 20px;
             word-break: break-all;
             text-align: center;
-
         }
-
-
 
         ::placeholder {
             color: #0298cf;
@@ -154,13 +145,13 @@ include("config.php");
                             <th>Kategori</th>
                             <th>Tanggal</th>
                             <th>Rating</th>
-                            <th>action</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-
                         <?php
-                        $sql = "SELECT * FROM artikel";
+                        $sql = "SELECT artikel.*, kategori_artikel.nama_kategori FROM artikel 
+                                JOIN kategori_artikel ON artikel.id_kategori = kategori_artikel.id_kategori";
                         $query = mysqli_query($koneksi, $sql);
                         $i = 1;
 
@@ -168,21 +159,17 @@ include("config.php");
                             echo "<tr>";
                             echo "<td>{$i}</td>";
                             echo "<td>{$artikel['judul_artikel']}</td>";
-                            echo "<td>{$artikel['kategori_artikel']}</td>";
+                            echo "<td>{$artikel['nama_kategori']}</td>";
                             echo "<td>{$artikel['tanggal_artikel']}</td>";
                             echo "<td>{$artikel['rating']}</td>";
-
                             echo "<td> 
-                            <a href='edit.php?id={$artikel["id_artikel"]}'><button class='edit'><i class='fa-solid fa-pen-to-square'></i></button></a>
-                            <a href='deleteArtikel.php?id={$artikel["id_artikel"]}'><button class='delete'><i class='fa-solid fa-trash'></i></button></a>
-                            </td>";
-
+                                <a href='edit.php?id={$artikel["id_artikel"]}'><button class='edit'><i class='fa-solid fa-pen-to-square'></i></button></a>
+                                <a href='deleteArtikel.php?id={$artikel["id_artikel"]}'><button class='delete'><i class='fa-solid fa-trash'></i></button></a>
+                                </td>";
                             echo "</tr>";
                             $i++;
                         }
                         ?>
-
-
                     </tbody>
                 </table>
             </div>

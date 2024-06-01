@@ -20,9 +20,11 @@ if (mysqli_num_rows($query) < 1) {
     die("data tidak ditemukan...");
 }
 
+// Query untuk mengambil data kategori dari database
+$sql_kategori = "SELECT * FROM kategori_artikel";
+$query_kategori = mysqli_query($koneksi, $sql_kategori);
 
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -72,7 +74,7 @@ if (mysqli_num_rows($query) < 1) {
 
         input[type="text"],
         textarea,
-        input[type="date"] {
+        select {
             width: calc(100% - 22px);
             padding: 10px;
             border: 1px solid #ccc;
@@ -82,10 +84,6 @@ if (mysqli_num_rows($query) < 1) {
         textarea {
             resize: vertical;
             height: 200px;
-        }
-
-        input[type="radio"] {
-            margin-right: 5px;
         }
 
         .add {
@@ -120,11 +118,6 @@ if (mysqli_num_rows($query) < 1) {
             background-color: #870202;
         }
 
-        .radio-group label {
-            display: flex;
-            margin-right: 10px;
-        }
-
         .tombol {
             display: flex;
             justify-content: space-evenly;
@@ -134,15 +127,14 @@ if (mysqli_num_rows($query) < 1) {
 
 <body>
     <header>
-        <h3>Edit Pasien</h3>
+        <h3>Edit Artikel</h3>
     </header>
 
     <form action="edited.php" method="POST">
 
         <fieldset>
 
-            <input type="hidden" name="id" value="<?php echo $artikel["id_artikel"]
-                                                    ?>" />
+            <input type="hidden" name="id" value="<?php echo $artikel["id_artikel"] ?>" />
 
             <p>
                 <label for="judul">Judul Artikel: </label>
@@ -150,22 +142,21 @@ if (mysqli_num_rows($query) < 1) {
             </p>
             <p>
                 <label for="isi_artikel">Isi Artikel: </label>
-                <textarea name="isiArtikel"><?php echo $artikel['isi_artikel']
-                                            ?></textarea>
+                <textarea name="isiArtikel"><?php echo $artikel['isi_artikel'] ?></textarea>
             </p>
             <p>
-                <label for="jenis_kelamin">Kategori: </label>
-                <?php $kategoriArtikel = $artikel["kategori_artikel"]; ?>
-                <label><input type="radio" name="kategori_artikel" value="Hidroponik" <?php echo ($kategoriArtikel == 'Hidroponik') ? "checked" : "" ?>> Hidroponik</label>
-                <label><input type="radio" name="kategori_artikel" value="Tanaman pangan" <?php echo ($kategoriArtikel == 'Tanaman pangan') ? "checked" : "" ?>> Tanaman pangan</label>
-                <label><input type="radio" name="kategori_artikel" value="Tanaman jamur" <?php echo ($kategoriArtikel == 'Tanaman jamur') ? "checked" : "" ?>> Tanaman jamur</label>
-                <label><input type="radio" name="kategori_artikel" value="Teknologi pertanian" <?php echo ($kategoriArtikel == 'Teknologi pertanian') ? "checked" : "" ?>> Teknologi pertanian</label>
-                <label><input type="radio" name="kategori_artikel" value="Penyakit tanaman" <?php echo ($kategoriArtikel == 'L') ? "Penyakit tanaman" : "" ?>> Penyakit tanaman</label>
-
+                <label for="kategori_artikel">Kategori: </label>
+                <select name="kategori_artikel">
+                     <?php
+                    while ($kategori = mysqli_fetch_array($query_kategori)) {
+                        $selected = ($artikel["id_kategori"] == $kategori["id_kategori"]) ? "selected" : "";
+                        echo "<option value='{$kategori["id_kategori"]}' {$selected}>{$kategori["nama_kategori"]}</option>";
+                    }
+                    ?>
+                </select>
             </p>
             <p class="tombol">
-     
-                <input class="add" type="submit" value="Edit Artikel" name="tambah" />
+                <input class="add" type="submit" value="Edit Artikel" name="edit" />
             </p>
         </fieldset>
     </form>
