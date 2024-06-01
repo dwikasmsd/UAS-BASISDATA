@@ -150,8 +150,11 @@ include("config.php");
                     </thead>
                     <tbody>
                         <?php
-                        $sql = "SELECT artikel.*, kategori_artikel.nama_kategori FROM artikel 
-                                JOIN kategori_artikel ON artikel.id_kategori = kategori_artikel.id_kategori";
+                        $sql = "SELECT artikel.*, kategori_artikel.nama_kategori, AVG(rating.nilai) AS avg_rating 
+                                FROM artikel 
+                                JOIN kategori_artikel ON artikel.id_kategori = kategori_artikel.id_kategori
+                                LEFT JOIN rating ON artikel.id_artikel = rating.id_artikel
+                                GROUP BY artikel.id_artikel";
                         $query = mysqli_query($koneksi, $sql);
                         $i = 1;
 
@@ -161,7 +164,7 @@ include("config.php");
                             echo "<td>{$artikel['judul_artikel']}</td>";
                             echo "<td>{$artikel['nama_kategori']}</td>";
                             echo "<td>{$artikel['tanggal_artikel']}</td>";
-                            echo "<td>{$artikel['rating']}</td>";
+                            echo "<td class='rate'>" . number_format($artikel['avg_rating'], 2) . "</td>";
                             echo "<td> 
                                 <a href='edit.php?id={$artikel["id_artikel"]}'><button class='edit'><i class='fa-solid fa-pen-to-square'></i></button></a>
                                 <a href='deleteArtikel.php?id={$artikel["id_artikel"]}'><button class='delete'><i class='fa-solid fa-trash'></i></button></a>

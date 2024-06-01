@@ -2,17 +2,6 @@
 
 include("config.php");
 
-$where_clause = "";
-if (isset($_GET['keyword']) && !empty($_GET['keyword'])) {
-    $keyword = $_GET['keyword'];
-    $where_clause .= " WHERE judul_artikel LIKE '%$keyword%'";
-}
-if (isset($_GET['kategori']) && !empty($_GET['kategori'])) {
-    $kategori = $_GET['kategori'];
-    $where_clause .= ($where_clause == "") ? " WHERE" : " AND";
-    $where_clause .= " kategori_artikel.id_kategori = $kategori";
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +10,7 @@ if (isset($_GET['kategori']) && !empty($_GET['kategori'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Top Artikel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
         <?php
@@ -116,7 +105,8 @@ if (isset($_GET['kategori']) && !empty($_GET['kategori'])) {
         }
 
         .category,
-        .aksi, .rate{
+        .aksi,
+        .rate {
             text-align: center;
         }
 
@@ -153,34 +143,17 @@ if (isset($_GET['kategori']) && !empty($_GET['kategori'])) {
 <body>
 
     <div class="sidebar">
-        <a class="active" href="halaman.php">Artikel</a>
-        <a href="">Pertanyaan</a>
-        <a href="topArtikel.php">TOP ARTIKEL</a>
-        <a href="#about">TOP MEMBER</a>
+        <a href="halaman.php">Artikel</a>
+        <a href="pertanyaan.php">Pertanyaan</a>
+        <a class="active" href="topArtikel.php">TOP ARTIKEL</a>
+        <a href="topMember.php">TOP MEMBER</a>
         <a href="index.php">Log out</a>
     </div>
 
     <div class="content">
         <div class="table">
             <div class="table_header">
-                <h2>ARTIKEL</h2>
-                <div>
-                    <form action="halaman.php" method="GET">
-                        <input type="text" name="keyword" placeholder="Cari artikel...">
-                        <select name="kategori">
-                            <option value="">Semua Kategori</option>
-                            <?php
-                            $sql_kategori = "SELECT * FROM kategori_artikel";
-                            $query_kategori = mysqli_query($koneksi, $sql_kategori);
-                            while ($kategori = mysqli_fetch_array($query_kategori)) {
-                                echo "<option value='{$kategori["id_kategori"]}'>{$kategori["nama_kategori"]}</option>";
-                            }
-                            ?>
-                        </select>
-                        <button class="search" type="submit">Cari & Filter</button>
-                    </form>
-                    <a href="Halaman.php"><button class="add_new">+ add new</button></a>
-                </div>
+                <h2>TOP ARTIKEL</h2>
             </div>
             <div class="table_section">
                 <table>
@@ -200,8 +173,9 @@ if (isset($_GET['kategori']) && !empty($_GET['kategori'])) {
                                 FROM artikel 
                                 JOIN kategori_artikel ON artikel.id_kategori = kategori_artikel.id_kategori
                                 LEFT JOIN rating ON artikel.id_artikel = rating.id_artikel
-                                $where_clause
-                                GROUP BY artikel.id_artikel";
+                                GROUP BY artikel.id_artikel
+                                ORDER BY avg_rating DESC
+                                LIMIT 10";
                         $query = mysqli_query($koneksi, $sql);
 
                         // Tampilkan hasil query

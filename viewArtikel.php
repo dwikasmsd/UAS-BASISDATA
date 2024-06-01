@@ -1,9 +1,35 @@
 <?php
 include("config.php");
 
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    $idArtikel = $_POST['id'];
+                    $rating = $_POST['rating'];
+
+                    // Periksa apakah artikel sudah pernah direview sebelumnya oleh pengguna
+                    $sql_check_review = "SELECT * FROM rating WHERE id_artikel = $idArtikel AND id_pengguna = 1";
+                    $result_check_review = mysqli_query($koneksi, $sql_check_review);
+
+                    if (mysqli_num_rows($result_check_review) > 0) {
+                        // Jika sudah direview, lakukan update rating
+                        $sql_update_rating = "UPDATE rating SET nilai = ROUND((nilai + $rating) / 2, 2)  WHERE id_artikel = $idArtikel AND id_pengguna = 1";
+                        mysqli_query($koneksi, $sql_update_rating);
+                    } else {
+                        // Jika belum direview, lakukan penambahan rating baru
+                        $sql_insert_rating = "INSERT INTO rating (id_artikel, id_pengguna, nilai) VALUES ($idArtikel, 1, $rating)";
+                        mysqli_query($koneksi, $sql_insert_rating);
+                    }
+
+                    // Redirect kembali ke halaman artikel setelah memberi rating
+                    header("Location: viewArtikel.php?id=$idArtikel");
+                    exit();
+                }
+
+
 $idArtikel = $_GET['id'];
 $sql = "SELECT * FROM artikel WHERE id_artikel = $idArtikel";
 $result = mysqli_query($koneksi, $sql);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -124,7 +150,14 @@ $result = mysqli_query($koneksi, $sql);
                 if (mysqli_num_rows($result) > 0) {
                     $article = mysqli_fetch_assoc($result);
                     echo "<h1 class='article-title'>" . htmlspecialchars($article['judul_artikel']) . "</h1>";
-                    echo "<div class='article-content'>" . nl2br(htmlspecialchars($article['isi_artikel'])) . "</div>";
+                    echo "<p class='article-content'>" . nl2br(htmlspecialchars($article['isi_artikel'])) . "</p>";
+
+                    echo "<form action='' method='post'>";
+                    echo "<input type='hidden' name='id' value='$idArtikel'>";
+                    echo "<label for='rating'>Rating (1-10): </label>";
+                    echo "<input type='number' name='rating' id='rating' min='1' max='10' required>";
+                    echo "<input type='submit' value='Berikan Rating'>";
+                    echo "</form>";
                 } else {
                     echo "<p>Article not found.</p>";
                 }
@@ -135,6 +168,6 @@ $result = mysqli_query($koneksi, $sql);
         </div>
     </div>
 
-</body>
+    </body>
 
 </html>
