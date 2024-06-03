@@ -44,3 +44,23 @@ CREATE TABLE rating (
     FOREIGN KEY (id_artikel) REFERENCES artikel(id_artikel),
     FOREIGN KEY (id_pengguna) REFERENCES pengguna(id)
 );
+
+
+CREATE TABLE pertanyaan (
+    id_pertanyaan INT AUTO_INCREMENT PRIMARY KEY,
+    judul_pertanyaan VARCHAR(255) NOT NULL,
+    isi_pertanyaan TEXT NOT NULL,
+    id_user INT NOT NULL,
+    tanggal DATETIME NOT NULL,
+    FOREIGN KEY (`id_user`) REFERENCES pengguna(`id`)
+);
+
+CREATE TABLE `jawaban` (
+    id_jawaban INT AUTO_INCREMENT PRIMARY KEY,
+    id_pertanyaan INT NOT NULL,
+    jawaban TEXT NOT NULL,
+    id_user INT NOT NULL,
+    tanggal DATETIME NOT NULL,
+    FOREIGN KEY (`id_pertanyaan`) REFERENCES pertanyaan(`id_pertanyaan`),
+    FOREIGN KEY (`id_user`) REFERENCES pengguna(`id`)
+);

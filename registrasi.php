@@ -52,6 +52,7 @@
                         }
                     }
                     ?></p>
+                    <a href="index.php">sudah punya akun? masuk sini</a>
                     <input type="submit" name="login" value="submit">
                 </form>
             </div>
