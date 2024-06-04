@@ -1,18 +1,26 @@
 <?php
-
 include("config.php");
 
-$where_clause = "";
+$search_query = "";
 if (isset($_GET['keyword']) && !empty($_GET['keyword'])) {
     $keyword = $_GET['keyword'];
-    $where_clause .= " WHERE judul_artikel LIKE '%$keyword%'";
-}
-if (isset($_GET['kategori']) && !empty($_GET['kategori'])) {
-    $kategori = $_GET['kategori'];
-    $where_clause .= ($where_clause == "") ? " WHERE" : " AND";
-    $where_clause .= " kategori_artikel.id_kategori = $kategori";
+    $search_query = " WHERE judul LIKE '%$keyword%' OR isi LIKE '%$keyword%'";
 }
 
+$filter_query = "";
+if (isset($_GET['kategori']) && !empty($_GET['kategori'])) {
+    $kategori = $_GET['kategori'];
+    $filter_query = " WHERE tanaman.id_tanaman = $kategori";
+}
+
+$sql = "SELECT pertanyaan.*, pengguna.nama_lengkap, tanaman.jenis_tanaman 
+        FROM pertanyaan 
+        JOIN pengguna ON pertanyaan.id_user = pengguna.id 
+        JOIN tanaman ON pertanyaan.id_tanaman = tanaman.id_tanaman
+        $search_query
+        $filter_query
+        ORDER BY pertanyaan.tanggal DESC";
+$query = mysqli_query($koneksi, $sql);
 ?>
 
 <!DOCTYPE html>
@@ -24,10 +32,7 @@ if (isset($_GET['kategori']) && !empty($_GET['kategori'])) {
     <title>Document</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
-        <?php
-
-        include("aset/sidebar.css");
-        ?>* {
+        <?php include("aset/sidebar.css"); ?>* {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -75,7 +80,6 @@ if (isset($_GET['kategori']) && !empty($_GET['kategori'])) {
             padding: 10px 20px;
             color: #ffffff;
             background-color: #0298cf;
-            margin-left: 10px;
         }
 
         input {
@@ -107,29 +111,13 @@ if (isset($_GET['kategori']) && !empty($_GET['kategori'])) {
             font-size: 15px;
         }
 
-        th {
-            border-bottom: 1px solid #dddddd;
-            padding: 10px 20px;
-            word-break: break-all;
-            text-align: center;
-
-        }
-
-        .category,
-        .aksi, .rate{
-            text-align: center;
-        }
-
-        .titel {
-            width: 200px;
-        }
-
+        th,
         td {
             border-bottom: 1px solid #dddddd;
             padding: 10px 20px;
             word-break: break-all;
+            text-align: center;
         }
-
 
         ::placeholder {
             color: #0298cf;
@@ -153,8 +141,8 @@ if (isset($_GET['kategori']) && !empty($_GET['kategori'])) {
 <body>
 
     <div class="sidebar">
-        <a class="active" href="halaman.php">Artikel</a>
-        <a href="pertanyaan.php">Pertanyaan</a>
+        <a href="halaman.php">Artikel</a>
+        <a class="active" href="pertanyaan.php">Pertanyaan</a>
         <a href="topArtikel.php">TOP ARTIKEL</a>
         <a href="#about">TOP MEMBER</a>
         <a href="index.php">Log out</a>
@@ -163,63 +151,46 @@ if (isset($_GET['kategori']) && !empty($_GET['kategori'])) {
     <div class="content">
         <div class="table">
             <div class="table_header">
-                <h2>ARTIKEL</h2>
-                <div>
-                    <form action="halaman.php" method="GET">
-                        <input type="text" name="keyword" placeholder="Cari artikel...">
-                        <select name="kategori">
-                            <option value="">Semua Kategori</option>
-                            <?php
-                            $sql_kategori = "SELECT * FROM kategori_artikel";
-                            $query_kategori = mysqli_query($koneksi, $sql_kategori);
-                            while ($kategori = mysqli_fetch_array($query_kategori)) {
-                                echo "<option value='{$kategori["id_kategori"]}'>{$kategori["nama_kategori"]}</option>";
-                            }
-                            ?>
-                        </select>
-                        <button class="search" type="submit">Cari & Filter</button>
-                    </form>
-                    <a href="Halaman.php"><button class="add_new">+ add new</button></a>
-                </div>
+                <a href="postingPertanyaan.php">tambah pertanyaan</a>
+                <p>Pertanyaan</p>
+                <form action="pertanyaan.php" method="GET">
+                    <input type="text" name="keyword" placeholder="Cari pertanyaan...">
+                    <select name="kategori">
+                        <option value="">Semua Kategori</option>
+                        <?php
+                        $sql_kategori = "SELECT * FROM tanaman";
+                        $query_kategori = mysqli_query($koneksi, $sql_kategori);
+                        while ($tanaman = mysqli_fetch_array($query_kategori)) {
+                            echo "<option value='{$tanaman['id_tanaman']}'>{$tanaman['jenis_tanaman']}</option>";
+                        }
+                        ?>
+                    </select>
+                    <button class="search" type="submit">Cari & Filter</button>
+                </form>
             </div>
             <div class="table_section">
                 <table>
                     <thead>
                         <tr>
-                            <th>Judul Artikel</th>
+                            <th>Judul</th>
+                            <th>Pengguna</th>
                             <th>Kategori</th>
-                            <th>Rating</th>
-                            <th>action</th>
+                            <th>Tanggal</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-
                         <?php
-
-                        $sql = "SELECT artikel.*, kategori_artikel.nama_kategori, AVG(rating.nilai) AS avg_rating 
-                                FROM artikel 
-                                JOIN kategori_artikel ON artikel.id_kategori = kategori_artikel.id_kategori
-                                LEFT JOIN rating ON artikel.id_artikel = rating.id_artikel
-                                $where_clause
-                                GROUP BY artikel.id_artikel";
-                        $query = mysqli_query($koneksi, $sql);
-
-                        // Tampilkan hasil query
-                        while ($artikel = mysqli_fetch_array($query)) {
+                        while ($pertanyaan = mysqli_fetch_array($query)) {
                             echo "<tr>";
-                            echo "<td class='titel'>{$artikel['judul_artikel']}</td>";
-                            echo "<td class='category'>{$artikel['nama_kategori']}</td>";
-                            echo "<td class='rate'>" . number_format($artikel['avg_rating'], 2) . "</td>";
-                            echo "<td class='aksi'> 
-                            <a href='viewArtikel.php?id={$artikel["id_artikel"]}'><button class='edit'><i class='fa-regular fa-eye'></i></button></a>
-                            </td>";
-
+                            echo "<td>{$pertanyaan['isi_pertanyaan']}</td>";
+                            echo "<td>{$pertanyaan['nama_lengkap']}</td>";
+                            echo "<td>{$pertanyaan['jenis_tanaman']}</td>";
+                            echo "<td>{$pertanyaan['tanggal']}</td>";
+                            echo "<td><a href='viewQuestion.php?id={$pertanyaan['id_pertanyaan']}'>Lihat Detail</a></td>";
                             echo "</tr>";
                         }
-
                         ?>
-
-
                     </tbody>
                 </table>
             </div>

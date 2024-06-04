@@ -48,14 +48,16 @@ CREATE TABLE rating (
 
 CREATE TABLE pertanyaan (
     id_pertanyaan INT AUTO_INCREMENT PRIMARY KEY,
-    judul_pertanyaan VARCHAR(255) NOT NULL,
     isi_pertanyaan TEXT NOT NULL,
+    gambar VARCHAR(260),
     id_user INT NOT NULL,
+    id_tanaman INT NOT NULL,
     tanggal DATETIME NOT NULL,
-    FOREIGN KEY (`id_user`) REFERENCES pengguna(`id`)
+    FOREIGN KEY (id_user) REFERENCES pengguna(id),
+    FOREIGN KEY (id_tanaman) REFERENCES tanaman(id_tanaman)
 );
 
-CREATE TABLE `jawaban` (
+CREATE TABLE jawaban (
     id_jawaban INT AUTO_INCREMENT PRIMARY KEY,
     id_pertanyaan INT NOT NULL,
     jawaban TEXT NOT NULL,

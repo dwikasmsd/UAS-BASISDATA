@@ -1,5 +1,5 @@
 <?php 
-
+	session_start();
 	include("config.php");
 
 	if (isset($_POST["login"])) {
@@ -14,6 +14,7 @@
 			
 			
 			if (password_verify($password, $baris["password"])) {
+			$_SESSION['id_user'] = $baris['id'];
 				header("location: Halaman.php");
 			}
 		}
