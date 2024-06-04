@@ -66,3 +66,25 @@ CREATE TABLE jawaban (
     FOREIGN KEY (`id_pertanyaan`) REFERENCES pertanyaan(`id_pertanyaan`),
     FOREIGN KEY (`id_user`) REFERENCES pengguna(`id`)
 );
+
+
+CREATE TABLE laporan (
+    id_laporan INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    id_pertanyaan INT NOT NULL,
+    id_jawaban INT NOT NULL,
+    id_pelapor INT NOT NULL,
+    alasan TEXT,
+    tanggal TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_pertanyaan) REFERENCES pertanyaan(id_pertanyaan),
+    FOREIGN KEY (id_jawaban) REFERENCES jawaban(id_jawaban),
+    FOREIGN KEY (id_pelapor) REFERENCES pengguna(id)
+);
+
+CREATE TABLE likes (
+    id_like INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    id_jawaban INT NOT NULL,
+    id_user INT NOT NULL,
+    tanggal TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_jawaban) REFERENCES jawaban(id_jawaban),
+    FOREIGN KEY (id_user) REFERENCES pengguna(id)
+);
