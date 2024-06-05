@@ -8,8 +8,8 @@ CREATE TABLE admin (
 
 CREATE TABLE pengguna (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    no_hp VARCHAR(260) NOT NULL,
     nama_lengkap VARCHAR(260) NOT NULL,
+    no_hp VARCHAR(260) NOT NULL,
     password VARCHAR(260) NOT NULL,
     quality_point INT DEFAULT 0 
 );
@@ -52,7 +52,7 @@ CREATE TABLE pertanyaan (
     gambar VARCHAR(260),
     id_user INT NOT NULL,
     id_tanaman INT NOT NULL,
-    tanggal DATETIME NOT NULL,
+    tanggal DATE NOT NULL,
     FOREIGN KEY (id_user) REFERENCES pengguna(id),
     FOREIGN KEY (id_tanaman) REFERENCES tanaman(id_tanaman)
 );
@@ -62,7 +62,9 @@ CREATE TABLE jawaban (
     id_pertanyaan INT NOT NULL,
     jawaban TEXT NOT NULL,
     id_user INT NOT NULL,
-    tanggal DATETIME NOT NULL,
+    likes INT DEFAULT 0,
+    tanggal DATE NOT NULL,
+
     FOREIGN KEY (id_pertanyaan) REFERENCES pertanyaan(id_pertanyaan),
     FOREIGN KEY (id_user) REFERENCES pengguna(id)
 );
