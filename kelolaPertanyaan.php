@@ -120,10 +120,10 @@ include("config.php");
 <body>
 
     <div class="sidebar">
-        <a class="active" href="dashboard.php">Artikel</a>
+        <a href="dashboard.php">Artikel</a>
         <a href="jenisTanaman.php">Tanaman</a>
         <a href="kategoriArtikel.php">Kategori Artikel</a>
-        <a href="kelolaPertanyaan.php">Daftar Pertanyaan</a>
+        <a class="active" href="kelolaPertanyaan.php">Daftar Pertanyaan</a>
         <a href="#about">Daftar Jawaban</a>
         <a href="index.php">Log out</a>
     </div>
@@ -131,7 +131,7 @@ include("config.php");
     <div class="content">
         <div class="table">
             <div class="table_header">
-                <p>List Artikel</p>
+                <p>List Pertanyaan</p>
                 <div>
                     <a href="tambahArtikel.php"><button class="add_new">+ add new</button></a>
                 </div>
@@ -141,33 +141,29 @@ include("config.php");
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Judul Artikel</th>
-                            <th>Kategori</th>
-                            <th>Tanggal</th>
-                            <th>Rating</th>
+                            <th>Pertanyaan</th>
+                            <th>Laporan</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $sql = "SELECT artikel.*, kategori_artikel.nama_kategori, AVG(rating.nilai) AS avg_rating 
-                                FROM artikel 
-                                JOIN kategori_artikel ON artikel.id_kategori = kategori_artikel.id_kategori
-                                LEFT JOIN rating ON artikel.id_artikel = rating.id_artikel
-                                GROUP BY artikel.id_artikel";
-                        $query = mysqli_query($koneksi, $sql);
+                        $sql = "SELECT pertanyaan.id_pertanyaan, pertanyaan.isi_pertanyaan, COUNT(laporan_pertanyaan.id_laporanPertanyaan) as jumlah_laporan 
+                                FROM pertanyaan 
+                                LEFT JOIN laporan_pertanyaan ON pertanyaan.id_pertanyaan = laporan_pertanyaan.id_pertanyaan GROUP BY pertanyaan.id_pertanyaan
+                                ORDER BY jumlah_laporan DESC
+";
+                        $result = mysqli_query($koneksi, $sql);
                         $i = 1;
 
-                        while ($artikel = mysqli_fetch_array($query)) {
+                        while ($pertanyaan = mysqli_fetch_array($result)) {
                             echo "<tr>";
                             echo "<td>{$i}</td>";
-                            echo "<td>{$artikel['judul_artikel']}</td>";
-                            echo "<td>{$artikel['nama_kategori']}</td>";
-                            echo "<td>{$artikel['tanggal_artikel']}</td>";
-                            echo "<td class='rate'>" . number_format($artikel['avg_rating'], 2) . "</td>";
+                            echo "<td>{$pertanyaan['isi_pertanyaan']}</td>";
+                            echo "<td>{$pertanyaan['jumlah_laporan']}</td>";
+            
                             echo "<td> 
-                                <a href='edit.php?id={$artikel["id_artikel"]}'><button class='edit'><i class='fa-solid fa-pen-to-square'></i></button></a>
-                                <a href='deleteArtikel.php?id={$artikel["id_artikel"]}'><button class='delete'><i class='fa-solid fa-trash'></i></button></a>
+                                <a href='deletePertanyaan.php?id={$pertanyaan["id_pertanyaan"]}'><button class='delete'><i class='fa-solid fa-trash'></i></button></a>
                                 </td>";
                             echo "</tr>";
                             $i++;
