@@ -235,7 +235,7 @@ $pertanyaan = mysqli_fetch_array($result);
 
             <?php if ($pertanyaan['gambar']) : ?>
                 <p>
-                    <img src="<?php echo $pertanyaan['gambar']; ?>" alt="Question Image">
+                    <img style="width: 400px; height: 340px;" src="<?php echo $pertanyaan['gambar']; ?>" alt="Question Image">
                 </p>
             <?php endif; ?>
 
