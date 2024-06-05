@@ -187,7 +187,7 @@ $query = mysqli_query($koneksi, $sql);
                             echo "<td>{$pertanyaan['nama_lengkap']}</td>";
                             echo "<td>{$pertanyaan['jenis_tanaman']}</td>";
                             echo "<td>{$pertanyaan['tanggal']}</td>";
-                            echo "<td><a href='viewQuestion.php?id={$pertanyaan['id_pertanyaan']}'>Lihat Detail</a></td>";
+                            echo "<td><a href='detailPertanyaan.php?id={$pertanyaan['id_pertanyaan']}'>Lihat Detail</a></td>";
                             echo "</tr>";
                         }
                         ?>
