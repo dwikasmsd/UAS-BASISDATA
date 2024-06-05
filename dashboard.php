@@ -124,7 +124,7 @@ include("config.php");
         <a href="jenisTanaman.php">Tanaman</a>
         <a href="kategoriArtikel.php">Kategori Artikel</a>
         <a href="kelolaPertanyaan.php">Daftar Pertanyaan</a>
-        <a href="#about">Daftar Jawaban</a>
+        <a href="kelolaJawaban.php">Daftar Jawaban</a>
         <a href="index.php">Log out</a>
     </div>
 

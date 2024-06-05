@@ -1,24 +1,5 @@
 <?php
-
 include("config.php");
-
-
-if (isset($_POST["add"])) {
-    $kategori = $_POST["nama_kategori"];
-
-    if (!empty($kategori)) {
-
-        $sql = "SELECT * FROM kategori_artikel WHERE nama_kategori = '$kategori'";
-        $result = mysqli_query($koneksi, $sql);
-
-        if (mysqli_num_rows($result) === 1) {
-            $error = true;
-        } else {
-            mysqli_query($koneksi, "INSERT INTO kategori_artikel(nama_kategori) VALUES('$kategori')");
-            header("location: kategoriArtikel.php");
-        }
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -30,10 +11,7 @@ if (isset($_POST["add"])) {
     <title>Document</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
-        <?php
-
-        include("aset/sidebar.css");
-        ?>* {
+        <?php include("aset/sidebar.css"); ?>* {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -81,11 +59,6 @@ if (isset($_POST["add"])) {
             padding: 10px 20px;
             color: #ffffff;
             background-color: #0298cf;
-            cursor: pointer;
-        }
-
-        .add_new:hover {
-            background-color: teal;
         }
 
         input {
@@ -123,10 +96,7 @@ if (isset($_POST["add"])) {
             padding: 10px 20px;
             word-break: break-all;
             text-align: center;
-
         }
-
-
 
         ::placeholder {
             color: #0298cf;
@@ -152,63 +122,50 @@ if (isset($_POST["add"])) {
     <div class="sidebar">
         <a href="dashboard.php">Artikel</a>
         <a href="jenisTanaman.php">Tanaman</a>
-        <a class="active" href="kategriArtikel.php">Kategori Artikel</a>
+        <a href="kategoriArtikel.php">Kategori Artikel</a>
         <a href="kelolaPertanyaan.php">Daftar Pertanyaan</a>
-        <a href="kelolaJawaban.php">Daftar Jawaban</a>
+        <a class="active" href="kelolaJawaban.php">Daftar Jawaban</a>
         <a href="index.php">Log out</a>
     </div>
 
     <div class="content">
         <div class="table">
             <div class="table_header">
-                <p>List Kategori Artikel</p>
-                <div>
-                    <form action="kategoriArtikel.php" method="post">
-                        <input type="text" placeholder="kategori" name="nama_kategori">
-                        <input type="submit" class="add_new" name="add" value="+ add">
-                        <?php
-                        if (isset($_POST["add"])) {
-                            if ($error = true) {
-                                echo "jenis tanaman sudah dimasukan/kolom kosong";
-                                $error = false;
-                            }
-                        }
-                        ?>
-                    </form>
-                </div>
+                <p>List Jawaban</p>
             </div>
             <div class="table_section">
                 <table>
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Kategori Artikel</th>
-                            <th>action</th>
+                            <th>Jawaban</th>
+                            <th>Laporan</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-
                         <?php
-                        $sql = "SELECT * FROM kategori_artikel";
-                        $query = mysqli_query($koneksi, $sql);
+                        $sql = "SELECT jawaban.id_jawaban, jawaban.jawaban, COUNT(laporan_jawaban.id_laporanJawaban) as jumlah_laporan 
+                                FROM jawaban 
+                                LEFT JOIN laporan_jawaban ON jawaban.id_jawaban = laporan_jawaban.id_jawaban GROUP BY jawaban.id_jawaban
+                                ORDER BY jumlah_laporan DESC
+";
+                        $result = mysqli_query($koneksi, $sql);
                         $i = 1;
 
-                        while ($kategoriArtikel = mysqli_fetch_array($query)) {
+                        while ($jawaban = mysqli_fetch_array($result)) {
                             echo "<tr>";
                             echo "<td>{$i}</td>";
-                            echo "<td>{$kategoriArtikel['nama_kategori']}</td>";
-
+                            echo "<td>{$jawaban['jawaban']}</td>";
+                            echo "<td>{$jawaban['jumlah_laporan']}</td>";
 
                             echo "<td> 
-                            <a href='deleteTanaman.php?id={$kategoriArtikel["id_kategori"]}'><button class='delete'><i class='fa-solid fa-trash'></i></button></a>
-                            </td>";
-
+                                <a href='deleteJawaban.php?id={$jawaban["id_jawaban"]}'><button class='delete'><i class='fa-solid fa-trash'></i></button></a>
+                                </td>";
                             echo "</tr>";
                             $i++;
                         }
                         ?>
-
-
                     </tbody>
                 </table>
             </div>

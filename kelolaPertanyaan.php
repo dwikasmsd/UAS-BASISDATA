@@ -124,7 +124,7 @@ include("config.php");
         <a href="jenisTanaman.php">Tanaman</a>
         <a href="kategoriArtikel.php">Kategori Artikel</a>
         <a class="active" href="kelolaPertanyaan.php">Daftar Pertanyaan</a>
-        <a href="#about">Daftar Jawaban</a>
+        <a href="kelolaJawaban.php">Daftar Jawaban</a>
         <a href="index.php">Log out</a>
     </div>
 
@@ -132,9 +132,6 @@ include("config.php");
         <div class="table">
             <div class="table_header">
                 <p>List Pertanyaan</p>
-                <div>
-                    <a href="tambahArtikel.php"><button class="add_new">+ add new</button></a>
-                </div>
             </div>
             <div class="table_section">
                 <table>
