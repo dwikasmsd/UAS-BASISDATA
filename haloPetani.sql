@@ -63,8 +63,8 @@ CREATE TABLE jawaban (
     jawaban TEXT NOT NULL,
     id_user INT NOT NULL,
     tanggal DATETIME NOT NULL,
-    FOREIGN KEY (`id_pertanyaan`) REFERENCES pertanyaan(`id_pertanyaan`),
-    FOREIGN KEY (`id_user`) REFERENCES pengguna(`id`)
+    FOREIGN KEY (id_pertanyaan) REFERENCES pertanyaan(id_pertanyaan),
+    FOREIGN KEY (id_user) REFERENCES pengguna(id)
 );
 
 
