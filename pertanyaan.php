@@ -4,7 +4,7 @@ include("config.php");
 $search_query = "";
 if (isset($_GET['keyword']) && !empty($_GET['keyword'])) {
     $keyword = $_GET['keyword'];
-    $search_query = " WHERE judul LIKE '%$keyword%' OR isi LIKE '%$keyword%'";
+    $search_query = " WHERE isi_pertanyaan LIKE '%$keyword%'";
 }
 
 $filter_query = "";
@@ -144,7 +144,7 @@ $query = mysqli_query($koneksi, $sql);
         <a href="halaman.php">Artikel</a>
         <a class="active" href="pertanyaan.php">Pertanyaan</a>
         <a href="topArtikel.php">TOP ARTIKEL</a>
-        <a href="#about">TOP MEMBER</a>
+        <a href="topTen.php">TOP MEMBER</a>
         <a href="index.php">Log out</a>
     </div>
 

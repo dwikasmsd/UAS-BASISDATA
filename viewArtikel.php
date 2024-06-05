@@ -1,21 +1,22 @@
 <?php
 include("config.php");
-
+session_start();
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $idArtikel = $_POST['id'];
                     $rating = $_POST['rating'];
+                    $id_user = $_SESSION['id_user'];
 
                     // Periksa apakah artikel sudah pernah direview sebelumnya oleh pengguna
-                    $sql_check_review = "SELECT * FROM rating WHERE id_artikel = $idArtikel AND id_pengguna = 1";
+                    $sql_check_review = "SELECT * FROM rating WHERE id_artikel = $idArtikel AND id_pengguna = $id_user";
                     $result_check_review = mysqli_query($koneksi, $sql_check_review);
 
                     if (mysqli_num_rows($result_check_review) > 0) {
                         // Jika sudah direview, lakukan update rating
-                        $sql_update_rating = "UPDATE rating SET nilai = ROUND((nilai + $rating) / 2, 2)  WHERE id_artikel = $idArtikel AND id_pengguna = 1";
+                        $sql_update_rating = "UPDATE rating SET nilai = ROUND((nilai + $rating) / 2, 2)  WHERE id_artikel = $idArtikel AND id_pengguna = $id_user";
                         mysqli_query($koneksi, $sql_update_rating);
                     } else {
                         // Jika belum direview, lakukan penambahan rating baru
-                        $sql_insert_rating = "INSERT INTO rating (id_artikel, id_pengguna, nilai) VALUES ($idArtikel, 1, $rating)";
+                        $sql_insert_rating = "INSERT INTO rating (id_artikel, id_pengguna, nilai) VALUES ($idArtikel, $id_user, $rating)";
                         mysqli_query($koneksi, $sql_insert_rating);
                     }
 

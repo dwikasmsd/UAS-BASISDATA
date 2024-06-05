@@ -146,7 +146,7 @@ include("config.php");
         <a href="halaman.php">Artikel</a>
         <a href="pertanyaan.php">Pertanyaan</a>
         <a class="active" href="topArtikel.php">TOP ARTIKEL</a>
-        <a href="topMember.php">TOP MEMBER</a>
+        <a href="topTen.php">TOP MEMBER</a>
         <a href="index.php">Log out</a>
     </div>
 
