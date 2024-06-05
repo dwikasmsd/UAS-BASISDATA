@@ -11,7 +11,7 @@ CREATE TABLE pengguna (
     no_hp VARCHAR(260) NOT NULL,
     nama_lengkap VARCHAR(260) NOT NULL,
     password VARCHAR(260) NOT NULL,
-    quality_point INT 
+    quality_point INT DEFAULT 0 
 );
 
 CREATE TABLE tanaman (
