@@ -2,9 +2,6 @@
 include("config.php"); 
 session_start();
 
-if (!isset($_SESSION['id_user'])) {
-    die("Error: User not logged in.");
-}
 
 if (isset($_POST["tambah"])) {
     $isi = $_POST['isi'];
