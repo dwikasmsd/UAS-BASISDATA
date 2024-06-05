@@ -155,7 +155,8 @@ if (isset($_POST["add"])) {
 
     <div class="sidebar">
         <a href="dashboard.php">Artikel</a>
-        <a class="active" href="#news">Tanaman</a>
+        <a class="active" href="jenisTanaman.php">Tanaman</a>
+        <a href="kategoriArtikel.php">Kategori Artikel</a>
         <a href="#contact">Daftar Pertanyaan</a>
         <a href="#about">Daftar Jawaban</a>
         <a href="index.php">Log out</a>

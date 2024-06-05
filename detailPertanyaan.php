@@ -221,7 +221,7 @@ $pertanyaan = mysqli_fetch_array($result);
         <a href="halaman.php">Artikel</a>
         <a class="active" href="pertanyaan.php">Pertanyaan</a>
         <a href="topArtikel.php">TOP ARTIKEL</a>
-        <a href="#about">TOP MEMBER</a>
+        <a href="topTen.php">TOP MEMBER</a>
         <a href="index.php">Log out</a>
     </div>
 
