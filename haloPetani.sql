@@ -68,23 +68,20 @@ CREATE TABLE jawaban (
 );
 
 
-CREATE TABLE laporan (
-    id_laporan INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+CREATE TABLE laporan_pertanyaan (
+    id_laporanPertanyaan INT AUTO_INCREMENT PRIMARY KEY,
     id_pertanyaan INT NOT NULL,
-    id_jawaban INT NOT NULL,
-    id_pelapor INT NOT NULL,
-    alasan TEXT,
-    tanggal TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_pertanyaan) REFERENCES pertanyaan(id_pertanyaan),
-    FOREIGN KEY (id_jawaban) REFERENCES jawaban(id_jawaban),
-    FOREIGN KEY (id_pelapor) REFERENCES pengguna(id)
+    id_user INT NOT NULL,
+    tanggal DATE NOT NULL,
+    FOREIGN KEY (id_user) REFERENCES pengguna(id),
+    FOREIGN KEY (id_pertanyaan) REFERENCES pertanyaan(id_pertanyaan) ON DELETE CASCADE
 );
 
-CREATE TABLE likes (
-    id_like INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+CREATE TABLE laporan_jawaban (
+    id_laporanJawaban INT AUTO_INCREMENT PRIMARY KEY,
     id_jawaban INT NOT NULL,
     id_user INT NOT NULL,
-    tanggal TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_jawaban) REFERENCES jawaban(id_jawaban),
-    FOREIGN KEY (id_user) REFERENCES pengguna(id)
+    tanggal DATE NOT NULL,
+    FOREIGN KEY (id_user) REFERENCES pengguna(id),
+    FOREIGN KEY (id_jawaban) REFERENCES jawaban(id_jawaban) ON DELETE CASCADE
 );
