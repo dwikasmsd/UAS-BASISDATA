@@ -6,7 +6,7 @@ if (!isset($_SESSION['id_user'])) {
     die("Error: User not logged in.");
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (isset($_POST["tambah"])) {
     $isi = $_POST['isi'];
     $id_user = $_SESSION['id_user'];
     $id_kategori = $_POST['jenisTanaman'];
@@ -74,6 +74,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         echo "Error: " . mysqli_error($koneksi);
     }
+} elseif (isset($_POST["batal"])) {
+    header("location: pertanyaan.php");
 }
 
 ?>
