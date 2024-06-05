@@ -249,15 +249,13 @@ $pertanyaan = mysqli_fetch_array($result);
 
             <h3>Jawaban</h3>
             <?php
-            $sql = "
-                SELECT jawaban.*, pengguna.nama_lengkap, COUNT(laporan_jawaban.id_laporanJawaban) AS laporan_count
+            $sql = "SELECT jawaban.*, pengguna.nama_lengkap, COUNT(laporan_jawaban.id_laporanJawaban) AS laporan_count
                 FROM jawaban 
                 JOIN pengguna ON jawaban.id_user = pengguna.id
                 LEFT JOIN laporan_jawaban ON laporan_jawaban.id_jawaban = jawaban.id_jawaban
                 WHERE jawaban.id_pertanyaan = ?
                 GROUP BY jawaban.id_jawaban, jawaban.jawaban, jawaban.id_user, jawaban.tanggal, pengguna.nama_lengkap
-                ORDER BY jawaban.tanggal DESC
-            ";
+                ORDER BY jawaban.tanggal DESC";
             $stmt = mysqli_prepare($koneksi, $sql);
             mysqli_stmt_bind_param($stmt, "i", $id_pertanyaan);
             mysqli_stmt_execute($stmt);
